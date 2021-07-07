@@ -20,8 +20,9 @@ def mark(data_raw):
         logging.warning(" Keyword '" + users_keyword + "' not declared in your config file!")
     if groups_keyword not in data_raw:
         logging.warning(" Keyword '" + groups_keyword + "' not declared in your config file!")
-
-    
+    if not (users_keyword in data_raw and groups_keyword in data_raw):
+        logging.error(" Keywords: '" + users_keyword + "' and '" + groups_keyword + "' not declared, process terminated.")
+        exit(1)
 
     result = [data_users, data_groups]
     return result
