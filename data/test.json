@@ -1,0 +1,30 @@
+{
+  "users": [
+    {
+      "name": "user1",
+      "password": "123",
+      "group": ["group1"]
+    },
+    {
+      "name": "user2",
+      "password": "123",
+      "group": ["group1", "group2"]
+    },
+    {
+      "name": "user3",
+      "password": "123",
+      "group": []
+    }
+  ],
+  "groups": [
+    {
+      "name": "group1"
+    },
+    {
+      "name": "group2"
+    },
+    {
+      "name": "group3"
+    }
+  ]
+}
