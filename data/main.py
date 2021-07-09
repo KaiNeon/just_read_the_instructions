@@ -12,7 +12,7 @@ CONF_TEMPLATE = "conf_"
 
 # Functions
 def get_data(file_dir=CONF_DIR):
-    with open(CONF_DIR, 'r', encoding='utf8') as file:
+    with open(file_dir, 'r', encoding='utf8') as file:
         return json.load(file)
 
 
@@ -21,7 +21,19 @@ def mark_groups(array):
     return result
 
 
-def compare_versions(data):
+def compare_part(cur_ver_data, new_ver_data, partname, mirror=False):
+    cur_ver_part = set(map(lambda x: x.get('name'), cur_ver_data.get(partname)))
+    new_ver_part = set(map(lambda x: x.get('name'), new_ver_data.get(partname)))
+    if mirror:
+        return cur_ver_part.difference(new_ver_part)
+    return new_ver_part.difference(cur_ver_part)
+
+
+def compare_versions(cur_ver_data=get_data('test_prev.json'), new_ver_data=get_data('test.json')):
+    print(compare_part(cur_ver_data, new_ver_data, 'users'))
+    print(compare_part(cur_ver_data, new_ver_data, 'groups'))
+    print(compare_part(cur_ver_data, new_ver_data, 'users', True))
+    print(compare_part(cur_ver_data, new_ver_data, 'groups', True))
     pass
 
 
@@ -43,7 +55,7 @@ def create_add_task(data=get_data(), version=get_current_ver() + 1):
     users = data.get('users')
     groups = data.get('groups')
     task = "---"
-    task += "\n# " + str(version)
+    task += "\n# Version: " + str(version)
     task += "\ntasks:"
     for unit in users:
         task += f"""
@@ -72,6 +84,8 @@ def create_task_file():
 
 # print(create_task())
 # print(get_current_ver())
+
+compare_versions()
 
 # result = [data_users, data_groups]
 # return result
