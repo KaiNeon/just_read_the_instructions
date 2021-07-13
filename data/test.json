@@ -11,7 +11,7 @@
       "groups": ["group1", "group2"]
     },
     {
-      "name": "user3",
+      "name": "m.zhurkin",
       "password": "123",
       "groups": []
     }
