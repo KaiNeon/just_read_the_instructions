@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="335030b0-791e-4f7f-bc04-6ae36d67c64f" name="Default Changelist" comment="compare module, writing to .yml, getting current version - DONE">
+    <list default="true" id="335030b0-791e-4f7f-bc04-6ae36d67c64f" name="Default Changelist" comment="release with main functions finished">
+      <change afterPath="$PROJECT_DIR$/data/settings.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/data/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/data/main.py" afterDir="false" />
     </list>
@@ -104,7 +105,14 @@
       <option name="project" value="LOCAL" />
       <updated>1626094152679</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="release with main functions finished">
+      <created>1626100192832</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1626100192832</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -122,6 +130,7 @@
     <MESSAGE value="updated file main.py&#10;new features&#10;version control system" />
     <MESSAGE value="compare def" />
     <MESSAGE value="compare module, writing to .yml, getting current version - DONE" />
-    <option name="LAST_COMMIT_MESSAGE" value="compare module, writing to .yml, getting current version - DONE" />
+    <MESSAGE value="release with main functions finished" />
+    <option name="LAST_COMMIT_MESSAGE" value="release with main functions finished" />
   </component>
 </project>
