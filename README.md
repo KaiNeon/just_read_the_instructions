@@ -1,2 +1,2 @@
-# just_read_the_instructuins
+# just_read_the_instructions
  
