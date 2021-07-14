@@ -47,47 +47,48 @@ def check_key(username, directory=KeysDir):
     return False
 
 
-def task_syntax_string(action, module, additional=''):
-    if not type(additional) == dict:
-        additional = {'name': str(additional)}
-    additional = additional.get('name')
-    syntax_string = f"{Tabs.get('module')}name: {action} {module} {additional}\n"
+def task_syntax_string(action='', module='', additional=''):
+    syntax_string = f"\n{Tabs.get('module')}name: {action} {module} {additional}\n"
     syntax_string += f"{Tabs.get('spaces')}{module}:\n"
     return syntax_string
 
 
-def subject_syntax_string(unit):
-    syntax_string = ""
+def subject_syntax_string(action, module, unit):
+    syntax_string = task_syntax_string(action, module, f"<{unit.get('name')}>")
     for line in unit.keys():
         if type(unit.get(line)) == list:
             if unit.get(line):
                 syntax_string += f"{Tabs.get('spacesX2')}{line}: {', '.join(unit.get(line))}\n"
         else:
             syntax_string += f"{Tabs.get('spacesX2')}{line}: {unit.get(line)}\n"
+    # syntax_string += f"{Tabs.get('spacesX2')}state: present\n"
+    return syntax_string
+
+
+def authkey_syntax_string(unitname):
+    syntax_string = task_syntax_string('Setting', 'authorized_key', f"for <{unitname}>")
+    syntax_string += f"{Tabs.get('spacesX2')}user: {unitname}\n"
+    syntax_string += f"{Tabs.get('spacesX2')}key: {os.path.join(KeysDir, unitname)}\n"
     syntax_string += f"{Tabs.get('spacesX2')}state: present\n"
     return syntax_string
 
 
-def authkey_syntax_string(unit):
-    syntax_string = "\n"
-    syntax_string += f"{Tabs.get('module')}name: Setting key for {unit.get('name')}\n"
-    syntax_string += f"{Tabs.get('spaces')}authorized_key:\n"
-    syntax_string += f"{Tabs.get('spacesX2')}user: {unit.get('name')}\n"
-    syntax_string += f"{Tabs.get('spacesX2')}key: {os.path.join(KeysDir, unit.get('name'))}\n"
-    syntax_string += f"{Tabs.get('spacesX2')}state: present\n"
+def sudoers_syntax_string(unitname):
+    syntax_string = task_syntax_string('Copying', 'copy', f"sudoers file for group {unitname}")
     return syntax_string
 
 
 def generate_task(action, module, unit):
     task_string = ""
+    rep_unit_name = unit.get('name')
     if module == 'user':
-        task_string += task_syntax_string(action, module, unit)
-        task_string += subject_syntax_string(unit)
-        if check_key(unit.get('name')):
-            task_string += authkey_syntax_string(unit)
+        task_string += subject_syntax_string(action, module, unit)
+        if check_key(rep_unit_name):
+            task_string += authkey_syntax_string(rep_unit_name)
     elif module == 'group':
-        task_string += task_syntax_string(action, module, unit)
-        task_string += subject_syntax_string(unit)
+        task_string += subject_syntax_string(action, module, unit)
+        if check_key(rep_unit_name):
+            task_string += subject_syntax_string(action, module, rep_unit_name)
         # - Create sudoers setting
     return task_string
 
@@ -99,7 +100,6 @@ def create_add_task(data, output_path):
     # file.write("---\ntasks:\n")
     for module in data.keys():
         for unit in data[module]:
-            task += ('\n')
             # Action syntax choose
             if 'remove' in unit.keys():
                 action = Action_dict['remove']
