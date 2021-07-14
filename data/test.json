@@ -1,5 +1,5 @@
 {
-  "users": [
+  "user": [
     {
       "name": "user1",
       "password": "123",
@@ -16,7 +16,7 @@
       "groups": []
     }
   ],
-  "groups": [
+  "group": [
     {
       "name": "group1"
     },
@@ -26,5 +26,8 @@
     {
       "name": "group3"
     }
+  ],
+  "key": [
+
   ]
 }

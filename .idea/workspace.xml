@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="335030b0-791e-4f7f-bc04-6ae36d67c64f" name="Default Changelist" comment="release with args support">
-      <change afterPath="$PROJECT_DIR$/data/justread.py" afterDir="false" />
+    <list default="true" id="335030b0-791e-4f7f-bc04-6ae36d67c64f" name="Default Changelist" comment="remake :)">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/justread.py" beforeDir="false" afterPath="$PROJECT_DIR$/data/justread.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/data/test.json" beforeDir="false" afterPath="$PROJECT_DIR$/data/test.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -141,7 +141,14 @@
       <option name="project" value="LOCAL" />
       <updated>1626175987616</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="remake :)">
+      <created>1626186337054</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1626186337054</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -161,6 +168,7 @@
     <MESSAGE value="compare module, writing to .yml, getting current version - DONE" />
     <MESSAGE value="release with main functions finished" />
     <MESSAGE value="release with args support" />
-    <option name="LAST_COMMIT_MESSAGE" value="release with args support" />
+    <MESSAGE value="remake :)" />
+    <option name="LAST_COMMIT_MESSAGE" value="remake :)" />
   </component>
 </project>
