@@ -1,6 +1,7 @@
 # Import
 import os.path
 import sys
+import time
 import json
 import logging
 import argparse
@@ -20,9 +21,9 @@ KeysDir = os.path.join(os.getcwd(), 'keys')
 
 # Preset
 Tabs = {
-    'spaces': '  ',
-    'spacesX2': '  ' * 2,
-    'module': '- '
+    'sp': '  ',
+    'sp2': '  ' * 2,
+    'md': '- '
 }
 Action_dict = {
     'add': 'Adding',
@@ -48,8 +49,8 @@ def check_key(username, directory=KeysDir):
 
 
 def task_syntax_string(action='', module='', additional=''):
-    syntax_string = f"\n{Tabs.get('module')}name: {action} {module} {additional}\n"
-    syntax_string += f"{Tabs.get('spaces')}{module}:\n"
+    syntax_string = f"\n{Tabs.get('md')}name: {action} {module} {additional}\n"
+    syntax_string += f"{Tabs.get('sp')}{module}:\n"
     return syntax_string
 
 
@@ -58,46 +59,50 @@ def subject_syntax_string(action, module, unit):
     for line in unit.keys():
         if type(unit.get(line)) == list:
             if unit.get(line):
-                syntax_string += f"{Tabs.get('spacesX2')}{line}: {', '.join(unit.get(line))}\n"
+                syntax_string += f"{Tabs.get('sp2')}{line}: {', '.join(unit.get(line))}\n"
         else:
-            syntax_string += f"{Tabs.get('spacesX2')}{line}: {unit.get(line)}\n"
-    # syntax_string += f"{Tabs.get('spacesX2')}state: present\n"
+            syntax_string += f"{Tabs.get('sp2')}{line}: {unit.get(line)}\n"
+    syntax_string += f"{Tabs.get('sp2')}state: present\n"
     return syntax_string
 
 
 def authkey_syntax_string(unitname):
     syntax_string = task_syntax_string('Setting', 'authorized_key', f"for <{unitname}>")
-    syntax_string += f"{Tabs.get('spacesX2')}user: {unitname}\n"
-    syntax_string += f"{Tabs.get('spacesX2')}key: {os.path.join(KeysDir, unitname)}\n"
-    syntax_string += f"{Tabs.get('spacesX2')}state: present\n"
+    syntax_string += f"{Tabs.get('sp2')}user: {unitname}\n"
+    syntax_string += f"{Tabs.get('sp2')}key: {os.path.join(KeysDir, unitname)}\n"
+    syntax_string += f"{Tabs.get('sp2')}state: present\n"
     return syntax_string
 
 
 def sudoers_syntax_string(unitname):
-    syntax_string = task_syntax_string('Copying', 'copy', f"sudoers file for group {unitname}")
+    syntax_string = task_syntax_string('Adding', 'copy', f"of sudoers file for group <{unitname}>")
+    syntax_string += f"{Tabs.get('sp2')}src: /etc/ansible/sudoers/{unitname}\n"
+    syntax_string += f"{Tabs.get('sp2')}dest: /etc/sudoers.d\n"
+    syntax_string += f"{Tabs.get('sp2')}owner: root\n"
+    syntax_string += f"{Tabs.get('sp2')}group: root\n"
+    syntax_string += f"{Tabs.get('sp2')}mode: ug+rwX,o=\n"
     return syntax_string
 
 
 def generate_task(action, module, unit):
     task_string = ""
-    rep_unit_name = unit.get('name')
+    rep_unitname = unit.get('name')
     if module == 'user':
         task_string += subject_syntax_string(action, module, unit)
-        if check_key(rep_unit_name):
-            task_string += authkey_syntax_string(rep_unit_name)
+        if check_key(rep_unitname):
+            task_string += authkey_syntax_string(rep_unitname)
     elif module == 'group':
         task_string += subject_syntax_string(action, module, unit)
-        if check_key(rep_unit_name):
-            task_string += subject_syntax_string(action, module, rep_unit_name)
+        if check_key(rep_unitname):
+            task_string += sudoers_syntax_string(rep_unitname)
         # - Create sudoers setting
     return task_string
 
 
 def create_add_task(data, output_path):
     # Writing task to .yml file
-    task = ""
-    # file = open(os.path.join(output_path), 'w')
-    # file.write("---\ntasks:\n")
+    file = open(os.path.join(output_path), 'w')
+    file.write(f"---\n# Time: {time.asctime()}\ntasks:\n")
     for module in data.keys():
         for unit in data[module]:
             # Action syntax choose
@@ -107,10 +112,9 @@ def create_add_task(data, output_path):
                 action = Action_dict['add']
             # Task generation
             print(action, module, unit)
-            task += (generate_task(action, module, unit))
+            file.write(generate_task(action, module, unit))
 
-    print(task)
-    # file.close()
+    file.close()
     return False
 
 
